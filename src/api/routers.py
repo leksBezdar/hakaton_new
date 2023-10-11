@@ -10,7 +10,7 @@ from src.auth.models import User
 from . import schemas
 
 from ..auth.dependencies import get_current_active_user, get_current_superuser
-from .models import Product, Service
+from .models import Product, Service, Address
 from .service import DatabaseManager
 from ..database import get_async_session
 
@@ -146,6 +146,74 @@ async def delete_service(
     service_crud = db_manager.service_crud
     
     await service_crud.delete_service(service_name=service_name, service_id=service_id)
+    
+    response = JSONResponse(content={
+        "message": "Delete successful",
+    })
+    
+    return response
+
+
+@router.post("/create_address/", response_model=schemas.Address)
+async def create_address(
+    address_data: schemas.AddressCreate,
+    db: AsyncSession = Depends(get_async_session),
+) -> Address:
+    db_manager = DatabaseManager(db)
+    address_crud = db_manager.address_crud
+    
+    return await address_crud.create_address(address=address_data)
+
+
+@router.get("/get_address/", response_model=schemas.Address)
+async def get_address(
+    address_name: str = None,
+    address_id: int = None,
+    db: AsyncSession = Depends(get_async_session),
+) -> Address:
+    db_manager = DatabaseManager(db)
+    address_crud = db_manager.address_crud
+    
+    return await address_crud.get_address(address_name=address_name, address_id=address_id)
+
+
+@router.get("/read_all_addressess")
+async def get_all_addresss(
+    offset: int = 0,
+    limit: int = 10,
+    db: AsyncSession = Depends(get_async_session),
+):
+    db_manager = DatabaseManager(db)
+    address_crud = db_manager.address_crud
+    
+    return await address_crud.get_all_addresss(offset=offset, limit=limit)
+
+
+@router.put("/update_address", response_model=schemas.Address)
+async def update_address(
+    address_id: int,
+    address_data: schemas.AddressUpdate,
+    db: AsyncSession = Depends(get_async_session),
+):
+    
+    db_manager = DatabaseManager(db)
+    address_crud = db_manager.address_crud
+    
+    return await address_crud.update_address(address_id=address_id, address_in=address_data)
+
+
+@router.delete("/delete_address")
+async def delete_address(
+    address_name: str = None,
+    address_id: int = None,
+    db: AsyncSession = Depends(get_async_session),
+    super_user: User = Depends(get_current_superuser)
+):
+    
+    db_manager = DatabaseManager(db)
+    address_crud = db_manager.address_crud
+    
+    await address_crud.delete_address(address_name=address_name, address_id=address_id)
     
     response = JSONResponse(content={
         "message": "Delete successful",
