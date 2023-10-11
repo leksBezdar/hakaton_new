@@ -80,15 +80,15 @@ async def delete_main_page(
     db_manager = DatabaseManager(db)
     main_page_crud = db_manager.main_page_crud
 
-    auth_manager = auth_manager(db)
-    token_crud = auth_manager.token_crud
+    auth_manager2 = auth_manager(db)
+    token_crud = auth_manager2.token_crud
 
     if token_crud.get_access_token_payload(token):
     
         await main_page_crud.delete_main_page(main_page_title=main_page_title, main_page_id=main_page_id)
-        
+
         response = JSONResponse(content={
             "message": "Delete successful",
         })
-        
+
         return response

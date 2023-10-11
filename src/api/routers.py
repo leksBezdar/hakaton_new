@@ -85,8 +85,8 @@ async def delete_product(
         "message": "Delete successful",
     })
 
-    auth_manager = auth_manager(db)
-    token_crud = auth_manager.token_crud
+    auth_service2 = auth_service(db)
+    token_crud = auth_service2.token_crud
 
     if token_crud.get_access_token_payload(token):
     
@@ -152,8 +152,8 @@ async def delete_service(
     
     db_manager = DatabaseManager(db)
     service_crud = db_manager.service_crud
-    auth_manager = auth_manager(db)
-    token_crud = auth_manager.token_crud
+    auth_service2 = auth_service(db)
+    token_crud = auth_service2.token_crud
 
     if token_crud.get_access_token_payload(token):
     
@@ -226,8 +226,8 @@ async def delete_address(
     db_manager = DatabaseManager(db)
     address_crud = db_manager.address_crud
     
-    auth_manager = auth_manager(db)
-    token_crud = auth_manager.token_crud
+    auth_service2 = auth_service(db)
+    token_crud = auth_service2.token_crud
 
     if token_crud.get_access_token_payload(token):
         

@@ -188,11 +188,11 @@ class AdressCRUD:
         return address_update
     
     
-    async def delete_address(self, address: str = None, address_id: int = None) -> None:
+    async def delete_address(self, address_name: str = None, address_id: int = None) -> None:
         
         await AddressDAO.delete(self.db, or_(
             address_id == Address.id,
-            address == Address.address))
+            address_name == Address.address))
         
         await self.db.commit()
     

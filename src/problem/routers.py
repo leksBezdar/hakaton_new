@@ -74,22 +74,20 @@ async def delete_problem(
     token: str,
     problem_title: str = None,
     problem_id: int = None,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
-):
+    db: AsyncSession = Depends(get_async_session)):
     
     db_manager = DatabaseManager(db)
     problem_crud = db_manager.problem_crud
 
-    auth_manager = auth_manager(db)
-    token_crud = auth_manager.token_crud
+    auth_manager2 = auth_manager(db)
+    token_crud = auth_manager2.token_crud
 
     if token_crud.get_access_token_payload(token):
     
         await problem_crud.delete_problem(problem_title=problem_title, problem_id=problem_id)
-        
+
         response = JSONResponse(content={
             "message": "Delete successful",
         })
-        
+
         return response
