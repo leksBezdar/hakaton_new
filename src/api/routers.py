@@ -22,9 +22,7 @@ router = APIRouter()
 @router.post("/create_product/", response_model=schemas.Product)
 async def create_product(
     product_data: schemas.ProductCreate,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
-) -> Product:
+    db: AsyncSession = Depends(get_async_session),) -> Product:
     db_manager = DatabaseManager(db)
     product_crud = db_manager.product_crud
     
@@ -60,7 +58,6 @@ async def update_product(
     product_id: int,
     product_data: schemas.ProductUpdate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ):
     
     db_manager = DatabaseManager(db)
@@ -97,7 +94,6 @@ async def delete_product(
 async def create_service(
     service_data: schemas.ServiceCreate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ) -> Service:
     db_manager = DatabaseManager(db)
     service_crud = db_manager.service_crud
@@ -134,7 +130,6 @@ async def update_service(
     service_id: int,
     service_data: schemas.ServiceUpdate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ):
     
     db_manager = DatabaseManager(db)
@@ -170,7 +165,6 @@ async def delete_service(
 async def create_address(
     address_data: schemas.AddressCreate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ) -> Address:
     db_manager = DatabaseManager(db)
     address_crud = db_manager.address_crud
@@ -207,7 +201,6 @@ async def update_address(
     address_id: int,
     address_data: schemas.AddressUpdate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ):
     
     db_manager = DatabaseManager(db)

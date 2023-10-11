@@ -23,7 +23,6 @@ router = APIRouter()
 async def create_main_page(
     main_page_data: schemas.Main_pageCreate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ) -> Main_page:
     db_manager = DatabaseManager(db)
     main_page_crud = db_manager.main_page_crud
@@ -59,7 +58,6 @@ async def get_all_main_pages(
 async def update_main_page(
     main_page_id: int,
     main_page_data: schemas.Main_pageUpdate,
-    super_user: User = Depends(get_current_superuser),
     db: AsyncSession = Depends(get_async_session),
 ):
     

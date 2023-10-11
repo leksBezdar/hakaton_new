@@ -23,7 +23,6 @@ router = APIRouter()
 async def create_problem(
     problem_data: schemas.ProblemCreate,
     db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
 ) -> Problem:
     db_manager = DatabaseManager(db)
     problem_crud = db_manager.problem_crud
@@ -59,7 +58,6 @@ async def get_all_problems(
 async def update_problem(
     problem_id: int,
     problem_data: schemas.ProblemUpdate,
-    super_user: User = Depends(get_current_superuser),
     db: AsyncSession = Depends(get_async_session),
 ):
     
