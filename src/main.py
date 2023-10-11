@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.auth.routers import router as auth_router
 from src.api.routers import router as api_router
+from src.problems.routers import router as problem_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -10,6 +11,8 @@ app = FastAPI(
 
 app.include_router(auth_router, tags=["Registration"])
 app.include_router(api_router, tags=["Api"])
+app.include_router(problem_router, tags=["Problem"])
+
 
 origins = [
     "http://localhost",
