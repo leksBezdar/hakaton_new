@@ -1,0 +1,5 @@
+__pycache__/
+venv/
+TODOS.txt
+.idea/
+.vscode/
