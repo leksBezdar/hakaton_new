@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field, validator
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 
 class Main_page(BaseModel):
@@ -7,7 +7,7 @@ class Main_page(BaseModel):
     subtitle: str
     history_block: str
     main_image: str
-    carousel_image: str
+    carousel_image: List
 
 class Main_pageCreateDB(Main_page):
     id: int
@@ -22,4 +22,4 @@ class Main_pageUpdate(Main_page):
     subtitle: Optional[str] = None
     history_block: Optional[str] = None
     main_image: Optional[str] = None
-    carousel_image: Optional[str] = None
+    carousel_image: Optional[List] = None

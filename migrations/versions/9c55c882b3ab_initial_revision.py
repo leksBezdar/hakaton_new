@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import ARRAY
 
 
 # revision identifiers, used by Alembic.
@@ -81,9 +82,10 @@ def upgrade() -> None:
     sa.Column('subtitle', sa.String(), nullable=False),
     sa.Column('history_block', sa.String(), nullable=False),
     sa.Column('main_image', sa.String(), nullable=False),
-    sa.Column('carousel_image', sa.String(), nullable=False),
+    sa.Column('carousel_image', ARRAY(sa.String()), nullable=False),  # Изменение типа на ARRAY
     sa.PrimaryKeyConstraint('id')
-    )
+)
+
     # ### end Alembic commands ###
 
 
