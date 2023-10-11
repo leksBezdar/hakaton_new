@@ -63,7 +63,17 @@ def upgrade() -> None:
 
     op.create_table('addressess',
     sa.Column('id', sa.Integer(), primary_key=True),
-    sa.Column('address', sa.String(), nullable=False, unique=True)
+    sa.Column('address', sa.String(), nullable=False, unique=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+
+    op.create_table('problems',
+    sa.Column('id', sa.Integer(), primary_key=True),
+    sa.Column('title', sa.String(), nullable=False, unique=True),
+    sa.Column('description', sa.String(), nullable=False),
+    sa.Column('collected', sa.Integer(), nullable=False),
+    sa.Column('necessary', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

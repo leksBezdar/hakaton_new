@@ -63,7 +63,7 @@ async def login(
         httponly=True
     )
     
-    return token
+    return token, user.is_superuser
 
 
 
