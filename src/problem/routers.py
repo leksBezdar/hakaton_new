@@ -12,6 +12,7 @@ from . import schemas
 from ..auth.dependencies import get_current_superuser
 from .models import Problem
 from .service import DatabaseManager
+from ..auth.service import DatabaseManager as auth_manager
 from ..database import get_async_session
 
 
@@ -70,6 +71,7 @@ async def update_problem(
 
 @router.delete("/delete_problem")
 async def delete_problem(
+    token: str,
     problem_title: str = None,
     problem_id: int = None,
     db: AsyncSession = Depends(get_async_session),
@@ -78,11 +80,16 @@ async def delete_problem(
     
     db_manager = DatabaseManager(db)
     problem_crud = db_manager.problem_crud
+
+    auth_manager = auth_manager(db)
+    token_crud = auth_manager.token_crud
+
+    if token_crud.get_access_token_payload(token):
     
-    await problem_crud.delete_problem(problem_title=problem_title, problem_id=problem_id)
-    
-    response = JSONResponse(content={
-        "message": "Delete successful",
-    })
-    
-    return response
+        await problem_crud.delete_problem(problem_title=problem_title, problem_id=problem_id)
+        
+        response = JSONResponse(content={
+            "message": "Delete successful",
+        })
+        
+        return response

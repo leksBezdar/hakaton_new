@@ -12,6 +12,7 @@ from . import schemas
 from ..auth.dependencies import get_current_superuser
 from .models import Product, Service, Address
 from .service import DatabaseManager
+from ..auth.service import DatabaseManager as auth_service
 from ..database import get_async_session
 
 
@@ -70,11 +71,10 @@ async def update_product(
 
 @router.delete("/delete_product")
 async def delete_product(
+    token: str,
     product_name: str = None,
     product_id: int = None,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
-):
+    db: AsyncSession = Depends(get_async_session)):
     
     db_manager = DatabaseManager(db)
     product_crud = db_manager.product_crud
@@ -84,8 +84,13 @@ async def delete_product(
     response = JSONResponse(content={
         "message": "Delete successful",
     })
+
+    auth_manager = auth_manager(db)
+    token_crud = auth_manager.token_crud
+
+    if token_crud.get_access_token_payload(token):
     
-    return response
+        return response
 
 
 @router.post("/create_service/", response_model=schemas.Service)
@@ -140,22 +145,25 @@ async def update_service(
 
 @router.delete("/delete_service")
 async def delete_service(
+    token: str,
     service_name: str = None,
     service_id: int = None,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
-):
+    db: AsyncSession = Depends(get_async_session)):
     
     db_manager = DatabaseManager(db)
     service_crud = db_manager.service_crud
+    auth_manager = auth_manager(db)
+    token_crud = auth_manager.token_crud
+
+    if token_crud.get_access_token_payload(token):
     
-    await service_crud.delete_service(service_name=service_name, service_id=service_id)
-    
-    response = JSONResponse(content={
-        "message": "Delete successful",
-    })
-    
-    return response
+        await service_crud.delete_service(service_name=service_name, service_id=service_id)
+
+        response = JSONResponse(content={
+            "message": "Delete successful",
+        })
+
+        return response
 
 
 @router.post("/create_address/", response_model=schemas.Address)
@@ -210,19 +218,23 @@ async def update_address(
 
 @router.delete("/delete_address")
 async def delete_address(
+    token: str,
     address_name: str = None,
     address_id: int = None,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
-):
+    db: AsyncSession = Depends(get_async_session)):
     
     db_manager = DatabaseManager(db)
     address_crud = db_manager.address_crud
     
-    await address_crud.delete_address(address_name=address_name, address_id=address_id)
-    
-    response = JSONResponse(content={
-        "message": "Delete successful",
-    })
-    
-    return response
+    auth_manager = auth_manager(db)
+    token_crud = auth_manager.token_crud
+
+    if token_crud.get_access_token_payload(token):
+        
+        await address_crud.delete_address(address_name=address_name, address_id=address_id)
+
+        response = JSONResponse(content={
+            "message": "Delete successful",
+        })
+
+        return response

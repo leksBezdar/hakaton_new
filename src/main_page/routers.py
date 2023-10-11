@@ -12,6 +12,7 @@ from . import schemas
 from ..auth.dependencies import get_current_superuser
 from .models import Main_page
 from .service import DatabaseManager
+from ..auth.service import DatabaseManager as auth_manager
 from ..database import get_async_session
 
 
@@ -70,19 +71,24 @@ async def update_main_page(
 
 @router.delete("/delete_main_page")
 async def delete_main_page(
+    token: str,
     main_page_title: str = None,
     main_page_id: int = None,
-    db: AsyncSession = Depends(get_async_session),
-    super_user: User = Depends(get_current_superuser)
+    db: AsyncSession = Depends(get_async_session)
 ):
     
     db_manager = DatabaseManager(db)
     main_page_crud = db_manager.main_page_crud
+
+    auth_manager = auth_manager(db)
+    token_crud = auth_manager.token_crud
+
+    if token_crud.get_access_token_payload(token):
     
-    await main_page_crud.delete_main_page(main_page_title=main_page_title, main_page_id=main_page_id)
-    
-    response = JSONResponse(content={
-        "message": "Delete successful",
-    })
-    
-    return response
+        await main_page_crud.delete_main_page(main_page_title=main_page_title, main_page_id=main_page_id)
+        
+        response = JSONResponse(content={
+            "message": "Delete successful",
+        })
+        
+        return response
