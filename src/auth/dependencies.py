@@ -35,12 +35,6 @@ async def get_current_superuser(current_user: User = Depends(get_current_user)) 
     if not current_user.is_superuser:
         raise exceptions.NotEnoughPermissions
     return current_user
-
-
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    if not current_user.is_active:
-        raise exceptions.InactiveUser
-    return current_user
     
     
         

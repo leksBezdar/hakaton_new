@@ -9,7 +9,7 @@ from src.auth.models import User
 
 from . import schemas
 
-from ..auth.dependencies import get_current_active_user, get_current_superuser
+from ..auth.dependencies import get_current_superuser
 from .models import Product, Service, Address
 from .service import DatabaseManager
 from ..database import get_async_session

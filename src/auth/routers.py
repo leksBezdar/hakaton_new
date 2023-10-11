@@ -10,7 +10,7 @@ from .config import ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
 
 from . import schemas
 
-from .dependencies import get_current_active_user, get_current_superuser
+from .dependencies import get_current_superuser
 from .models import User
 from .service import DatabaseManager
 from ..database import get_async_session
@@ -45,9 +45,7 @@ async def login(
     token_crud = db_manager.token_crud
 
     user = await user_crud.authenticate_user(username=credentials.username, password=credentials.password)
-    
-    await user_crud.get_user_statement(username = user.username, request=request)
-    
+        
     token = await token_crud.create_tokens(user_id = user.id)
     
     response.set_cookie(
@@ -73,7 +71,6 @@ async def logout(
     request: Request,
     response: Response,
     db: AsyncSession = Depends(get_async_session),
-    active_user = Depends(get_current_active_user)
 ):
    
     db_manager = DatabaseManager(db)
@@ -91,20 +88,6 @@ async def logout(
     return response
 
 
-@router.get("/me", response_model=schemas.User)
-async def get_current_user(
-    db: AsyncSession = Depends(get_async_session),
-    current_user: User = Depends(get_current_active_user)
-) -> Optional[User]:
-    
-    db_manager = DatabaseManager(db)
-    user_crud = db_manager.user_crud
-    
-    user = await user_crud.get_existing_user(username = current_user.username)
-    
-    return user
-
-
 # Получение информации о пользователе по имени пользователя
 @router.get("/read_user", response_model=None)
 async def get_user(
@@ -112,7 +95,6 @@ async def get_user(
     email: str = None,
     user_id: str = None,
     db: AsyncSession = Depends(get_async_session),
-    current_user: User = Depends(get_current_active_user),
 ) -> Optional[User]:
 
     db_manager = DatabaseManager(db)
@@ -205,10 +187,3 @@ async def delete_user(
     })
     
     return response
-
-
-@router.get("/check_superuser")
-async def check_superuser(
-    super_user: User = Depends(get_current_superuser)
-):
-    return {"Message": "Im a superuser"}

@@ -70,9 +70,6 @@ class UserCRUD:
          
          
         if user and await utils.validate_password(password=password, hashed_password=user.hashed_password):   
-            
-            # Меняем состояние поля is_active пользователя
-            await self.update_user_statement(username=user.username, new_is_active = True)
              
             return user
         
@@ -88,9 +85,7 @@ class UserCRUD:
             await RefreshTokenDAO.delete(self.db, id = refresh_session.id)
         
         user = await self.get_existing_user(user_id=refresh_session.user_id)
-        
-        await self.update_user_statement(user_id=user.id, new_is_active = False)
-        
+                
         await self.db.commit()
         
     
@@ -106,28 +101,7 @@ class UserCRUD:
         
         return user
     
-    # Обновление статуса 'is_active' пользователя
-    async def update_user_statement(self, new_is_active: str, username: str = None, user_id: str = None):
-        
-        if not username and not user_id:
-            raise exceptions.NoUserData
-        
-        user = await UserDAO.find_one_or_none(self.db, or_(
-            User.username == username,
-            User.id == user_id))
-        
-        # Меняем значение поля
-        update_stmt = (
-            update(User)
-            .where(or_(User.username == username, User.id == user_id))
-            .values(is_active=new_is_active)
-            .returning(User.is_active)
-        )
-        result = await self.db.execute(update_stmt)
-        
-        await self.db.commit()
-        
-        return {"message": new_is_active}
+
     
     
     # Получение списка всех пользователей с поддержкой пагинации
@@ -160,11 +134,6 @@ class UserCRUD:
         if refresh_token:
                 await RefreshTokenDAO.delete(self.db, user_id = refresh_token.user_id)
         
-        await UserDAO.update(
-                self.db,
-                User.id == user.id,
-                obj_in={'is_active': False},
-            )
         
         await self.db.commit()
         
@@ -190,27 +159,6 @@ class UserCRUD:
             username == User.username))
         
         await self.db.commit()
-        
-    
-    async def get_user_statement(self,
-        username: str,
-        request: Request) -> bool:
-
-        try:
-            refresh_token = request.cookies.get("refresh_token")
-            if refresh_token:
-                raise exceptions.UserAlreadyActive
-
-        except KeyError:
-            
-            user = await self.get_existing_user(username=username)
-            if not user:
-                raise exceptions.UserDoesNotExist
-            
-            if user.is_active == True:
-                await self.abort_user_sessions
-
-            return user.is_active
     
     
 class TokenCrud:

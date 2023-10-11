@@ -24,7 +24,6 @@ def upgrade() -> None:
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
     sa.Column('hashed_password', sa.String(), nullable=False),
-    sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('is_superuser', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username')
@@ -75,6 +74,16 @@ def upgrade() -> None:
     sa.Column('necessary', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+
+    op.create_table('main_pages',
+    sa.Column('id', sa.Integer(), primary_key=True),
+    sa.Column('title', sa.String(), nullable=False),
+    sa.Column('subtitle', sa.String(), nullable=False),
+    sa.Column('history_block', sa.String(), nullable=False),
+    sa.Column('main_image', sa.String(), nullable=False),
+    sa.Column('carousel_image', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     # ### end Alembic commands ###
 
 
@@ -88,4 +97,6 @@ def downgrade() -> None:
     op.drop_table('products')
     op.drop_table('services')
     op.drop_table('addressess')
+    op.drop_table('problems')
+    op.drop_table('main_pages')
     # ### end Alembic commands ###

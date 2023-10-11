@@ -15,7 +15,6 @@ class User(Base):
     id: Mapped[str] = mapped_column(primary_key=True, index=True)
     username: Mapped[str] = mapped_column(nullable=False, unique=True)
     hashed_password: Mapped[str] = mapped_column(nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     

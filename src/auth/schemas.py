@@ -12,7 +12,6 @@ from .config import (
 
 class UserBase(BaseModel):
     username: Optional[str]
-    is_active: bool = Field(False)
     is_superuser: bool = Field(False)
     
 
@@ -24,23 +23,14 @@ class UserCreate(UserBase):
     @validator("username")
     def validate_username_length(cls, value):
         if len(value) < int(user_min_len) or len(value) > int(user_max_len):
-            raise ValueError("Username must be between 5 and 15 characters")
+            raise ValueError("Username must be between 1 and 15 characters")
         
         return value
     
     @validator("password")
     def validate_password_complexity(cls, value):
         if len(value) < int(pass_min_len) or len(value) > int(pass_max_len):
-            raise ValueError("Password must be between 8 and 30 characters")
-        
-        if not re.search(r"\d", value):
-            raise ValueError("Password must contain at least one digit")
-        
-        if not re.search(r"[A-Z]", value):
-            raise ValueError("Password must contain at least one uppercase letter")
-        
-        if not re.search(r"[!@#$%^&*(),.?\":{}|<>_-]", value):
-            raise ValueError("Password must contain at least one special character")
+            raise ValueError("Password must be between 3 and 30 characters")
         
         return value
     
@@ -56,7 +46,6 @@ class UserLogin(BaseModel):
 class User(UserBase):
     id: str
     username: str
-    is_active: bool
     is_superuser: bool
     
     class Config:
