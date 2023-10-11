@@ -60,6 +60,11 @@ def upgrade() -> None:
     sa.Column('img', sa.String(), nullable=False, unique=False),
     sa.PrimaryKeyConstraint('id')
     )
+
+    op.create_table('addressess',
+    sa.Column('id', sa.Integer(), primary_key=True),
+    sa.Column('address', sa.String(), nullable=False, unique=True)
+    )
     # ### end Alembic commands ###
 
 
@@ -72,4 +77,5 @@ def downgrade() -> None:
     op.drop_table('users')
     op.drop_table('products')
     op.drop_table('services')
+    op.drop_table('addressess')
     # ### end Alembic commands ###

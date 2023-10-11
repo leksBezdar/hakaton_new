@@ -6,7 +6,7 @@ from sqlalchemy import or_, update
 
 from ..auth.models import User 
 
-from .dao import ProductDAO, ServiceDAO
+from .dao import ProductDAO, ServiceDAO, AddressDAO
 from .models import Product, Service, Address
 
 from . import schemas
