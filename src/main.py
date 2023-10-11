@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from src.auth.routers import router as auth_router
 from src.api.routers import router as api_router
-from src.problems.routers import router as problem_router
+from src.problem.routers import router as problem_router
 from src.main_page.routers import router as main_page_router
 from fastapi.middleware.cors import CORSMiddleware
 
