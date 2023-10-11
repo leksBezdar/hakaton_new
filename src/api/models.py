@@ -30,5 +30,12 @@ class Service(Base):
     time: Mapped[str] = mapped_column(nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
     img: Mapped[str] = mapped_column(nullable=False, unique=True)
+
+
+class Address(Base):
+    __tablename__ = 'addressess'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    address: Mapped[str] = mapped_column(nullable=False, unique=True)
     
     

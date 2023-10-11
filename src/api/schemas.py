@@ -53,3 +53,19 @@ class ServiceUpdate(Service):
 
 class ServiceCreate(Service):
     pass
+
+
+class Address(BaseModel):
+    address: str
+
+class AddressCreateDB(Address):
+    id: int
+
+class AddressCreate(Address):
+    pass
+
+class AddressUpdate(Address):
+    address: Optional[str] = None
+
+class AddressDelete(Address):
+    pass
