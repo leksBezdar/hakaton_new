@@ -58,6 +58,8 @@ def upgrade() -> None:
     sa.Column('time', sa.String(), nullable=False),
     sa.Column('type', sa.String(), nullable=False),
     sa.Column('img', sa.String(), nullable=False, unique=False),
+    sa.Column('phone_number', sa.String(), nullable=True),
+    sa.Column('rented_days', sa.JSON(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
 

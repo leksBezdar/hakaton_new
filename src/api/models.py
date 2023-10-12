@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from sqlalchemy import TIMESTAMP, Integer, Boolean, ForeignKey, JSON, String
+from sqlalchemy import TIMESTAMP, Integer, Boolean, ForeignKey, JSON, String, Column
 
 
 class Product(Base):
@@ -30,6 +30,10 @@ class Service(Base):
     time: Mapped[str] = mapped_column(nullable=False)
     type: Mapped[str] = mapped_column(nullable=False)
     img: Mapped[str] = mapped_column(nullable=False, unique=True)
+    phone_number: Mapped[str] = mapped_column(nullable=True, unique=False)
+    rented_days = Column(JSON, nullable=True)
+     
+
 
 
 class Address(Base):

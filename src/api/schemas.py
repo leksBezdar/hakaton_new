@@ -36,6 +36,8 @@ class Service(BaseModel):
     time: str
     img: str
     type: str
+    phone_number: str
+    rented_days: dict 
 
 
 class ServiceCreateDB(Service):
@@ -49,6 +51,8 @@ class ServiceUpdate(Service):
     time: Optional[str] = None
     img: Optional[str] = None
     type: Optional[str] = None
+    phone_number: Optional[str] = None
+    rented_days: Optional[dict] = None 
 
 
 class ServiceCreate(Service):
