@@ -81,6 +81,7 @@ def upgrade() -> None:
     op.create_table('main_pages',
     sa.Column('id', sa.Integer(), primary_key=True),
     sa.Column('title', sa.String(), nullable=False),
+    sa.Column('supertitle', sa.String(), nullable=True),
     sa.Column('subtitle', sa.String(), nullable=False),
     sa.Column('history_block', sa.String(), nullable=False),
     sa.Column('main_image', sa.String(), nullable=False),

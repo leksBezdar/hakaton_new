@@ -13,6 +13,7 @@ class Main_page(Base):
     __tablename__ = "main_pages"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    supertitle: Mapped[str] = mapped_column(nullable=True)
     title: Mapped[str] = mapped_column(nullable=False)
     subtitle: Mapped[str] = mapped_column(nullable=False)
     history_block: Mapped[str] = mapped_column(nullable=False)
