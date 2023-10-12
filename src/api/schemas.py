@@ -1,7 +1,6 @@
 import re
-
-from pydantic import BaseModel, EmailStr, Field, validator
-from typing import Dict, Optional
+from pydantic import BaseModel, EmailStr, Field, validator, Json
+from typing import Dict, Optional, Any
 
 
 class Product(BaseModel):
@@ -37,7 +36,7 @@ class Service(BaseModel):
     img: str
     type: str
     phone_number: str
-    rented_days: dict 
+    rented_days: dict
 
 
 class ServiceCreateDB(Service):

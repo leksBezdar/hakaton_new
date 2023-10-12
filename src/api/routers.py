@@ -116,7 +116,7 @@ async def get_service(
 @router.get("/read_all_services")
 async def get_all_services(
     offset: int = 0,
-    limit: int = 10,
+    limit: int = 30,
     db: AsyncSession = Depends(get_async_session),
 ):
     db_manager = DatabaseManager(db)
