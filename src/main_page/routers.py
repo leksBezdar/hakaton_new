@@ -30,7 +30,7 @@ async def create_main_page(
     return await main_page_crud.create_main_page(main_page=main_page_data)
 
 
-@router.get("/get_main_page/", response_model=schemas.Main_page)
+@router.get("/get_main_page/", response_model=schemas.Main_pageCreateDB)
 async def get_main_page(
     main_page_title: str = None,
     main_page_id: int = None,
